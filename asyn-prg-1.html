@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+What is the primary difference between synchronous and asynchronous programming in JavaScript?
+Synchronous programming: browser steps through program one line at a time, in the order written.
+At each point, the browser waits for the line to finish work before going on to the next line.
+Each line depends on the work done in preceding lines.
+Can take a long time if the algorithm is inefficient -> unresponsive program
+
+Asynchronous programming: 
+Start a long-running operation by calling a function.
+Have that function start the operation and return immediately, so that the program can still be responsive to other events.
+Notify with the result of the operation when it eventually completes.
+
+Why is this useful?
+Shortens program run time, make program responsive while it's running
+
+What problems does it solve?
+Solves problems of long running programs
+
+
+
+-->
+<!-- Event handler: form of asynchronous programming
+You provide a function (event handler) called, whenever the event (i.e. when program complete) happens -->
+
+<!--  The XMLHttpRequest API enables you to make HTTP requests to a remote server using JavaScript. 
+Get notified about the progress and completion of a request by attaching event listeners to the XMLHttpRequest object.
+Create a new XMLHttpRequest and listen for its loadend event. The handler logs a "Finished!" message along with the status code.
+-->
+<button id="xhr">Click to start request</button>
+<button id="reload">Reload</button>
+
+<pre readonly class="event-log"></pre>
+
+<script>
+    const log = document.querySelector('.event-log');
+
+document.querySelector('#xhr').addEventListener('click', () => {
+  log.textContent = '';
+
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('loadend', () => {
+    log.textContent = `${log.textContent}Finished with status: ${xhr.status}`;
+  });
+
+  xhr.open('GET', 'https://raw.githubusercontent.com/mdn/content/main/files/en-us/_wikihistory.json');
+  xhr.send();
+  log.textContent = `${log.textContent}Started XHR request\n`;});
+
+document.querySelector('#reload').addEventListener('click', () => {
+  log.textContent = '';
+  document.location.reload();
+});
+
+</script>
+
+<!-- Callbacks: function passed into another function, with the expectation that the callback will be called at the appropriate time.
+Event handler is a type of callback.
+Problem with callbacks: many nested callbacks (call callbacks inside callbacks -> get hard to handle errors) -->
+
+<script>
+    // Asynchronous program: 
+function doStep1(init) {
+    return init + 1;
+  }
+  
+  function doStep2(init) {
+    return init + 2;
+  }
+  
+  function doStep3(init) {
+    return init + 3;
+  }
+  
+  function doOperation() {
+    let result = 0;
+    result = doStep1(result);
+    result = doStep2(result);
+    result = doStep3(result);
+    console.log(`result: ${result}`);
+  }
+  
+  doOperation();
+
+
+  //callback:
+  function doStep1(init, callback) {
+  const result = init + 1;
+  callback(result);
+}
+
+function doStep2(init, callback) {
+  const result = init + 2;
+  callback(result);
+}
+
+function doStep3(init, callback) {
+  const result = init + 3;
+  callback(result);
+}
+
+function doOperation() {
+  doStep1(0, (result1) => {
+    doStep2(result1, (result2) => {
+      doStep3(result2, (result3) => {
+        console.log(`result: ${result3}`);
+      });
+    });
+  });
+}
+
+doOperation();
+  </script>
+</body>
+
+
+</html>
