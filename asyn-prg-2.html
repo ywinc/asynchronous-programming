@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        Promise: object returned by an asynchronous function, which represents the current state of the operation
+        At the time that the promise is returned to the caller, the operation often isn't finished.
+        
+        
+        async
+        await
+     -->
+</body>
+
+<script>
+    // send request msg for JSON file to remote server
+
+// const fetchPromise = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+// call fetch() API, assign return value to fetchPromise variable
+
+// console.log(fetchPromise);
+// // output: Promise{<state>: "pending"}
+
+// fetchPromise.then((response) => {
+//   console.log(`Received response: ${response.status}`);
+// });
+// //Pass handler function to Promise's then() method
+// // when fetch operation succeeds, promise will call the handler, pass in response object (server's response)
+
+// console.log("Started request…");
+// // output: Started request... Received response: 200 (status code for OK)
+
+
+// // Chaining promises
+// // fetch() API- once you get the response object, need to call another function to get response data
+// // json() to get response data, also asynchronous
+
+// fetchPromise
+//   .then((response) => {
+//     if (!response.ok) {
+//       throw new Error(`HTTP error: ${response.status}`);
+//     }
+//     return response.json();
+//   })
+//   .then((data) => {
+//     console.log(data[0].name);
+//   });
+
+
+// /* Catching Errors
+// catch(): handler passed to catch() is called when the asynchronous operation fails
+//  */
+
+// const fetchPromise = fetch('bad-scheme://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+// fetchPromise
+//   .then((response) => {
+//     if (!response.ok) {
+//       throw new Error(`HTTP error: ${response.status}`);
+//     }
+//     return response.json();
+//   })
+//   .then((data) => {
+//     console.log(data[0].name);
+//   })
+//   .catch((error) => {
+//     console.error(`Could not get products: ${error}`);
+//   });
+
+  /* Promise terminology: 
+  pending: promise created, asynchronous function hasn't succeeded/failed yet. 
+  Returned from a call to fetch(), request still being made
+  fulfilled: asynchronous function has succeeded -> then() handler called
+  rejected: asynchronous function failed -> catch() handler called
+  404 error is considered success, but network error is a failure
+  Settled: fulfilled and rejected
+  Resolved: settled, or locked in to follow the state of another promise 
+*/
+
+
+/* Combining multiple promises
+promise.all(): takes an array of promises and returns a single promise 
+(need all promises to be fulfilled, but they don't depend on each other. 
+Can start all together and then be notified when they are all fulfilled)
+fulfilled: when all promises are fulfilled
+then() handler called with an array of all the responses, in the same order that the promises were passed into all()
+rejected: if any promises are rejected -> catch()
+
+*/
+
+// const fetchPromise1 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+// const fetchPromise2 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found');
+// // request fulfilled, but 404 error since file doesn't exist
+// const fetchPromise3 = fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json');
+
+// Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
+//   .then((responses) => {
+//     for (const response of responses) {
+//       console.log(`${response.url}: ${response.status}`);
+//     }
+//   })
+//   .catch((error) => {
+//     console.error(`Failed to fetch: ${error}`)
+//   });
+
+// const fetchPromise1 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+// const fetchPromise2 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found');
+// const fetchPromise3 = fetch('bad-scheme://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json');
+
+// Promise.all([fetchPromise1, fetchPromise2, fetchPromise3])
+//   .then((responses) => {
+//     for (const response of responses) {
+//       console.log(`${response.url}: ${response.status}`);
+//     }
+//   })
+//   .catch((error) => {
+//     console.error(`Failed to fetch: ${error}`)
+//   });
+// // bad URL -> catch()
+
+// // promise.any(): any one of a set of promises to be fulfilled, reject only if all are rejected
+// const fetchPromise1 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+// const fetchPromise2 = fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/not-found');
+// const fetchPromise3 = fetch('https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json');
+
+// Promise.any([fetchPromise1, fetchPromise2, fetchPromise3])
+//   .then((response) => {
+//     console.log(`${response.url}: ${response.status}`);
+//   })
+//   .catch((error) => {
+//     console.error(`Failed to fetch: ${error}`)
+//   });
+
+/* async and await
+async function: use await keyword before a call to a function that returns a promise
+Makes code wait at that point until the promise is settled
+Then fulfilled value of the promise is treated as return/rejected value
+*/
+
+// async function fetchProducts() {
+//   try {
+//     // after this line, our function will wait for the `fetch()` call to be settled
+//     // the `fetch()` call will either return a Response or throw an error
+//     const response = await fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+//     if (!response.ok) {
+//       throw new Error(`HTTP error: ${response.status}`);
+//     }
+//     // after this line, our function will wait for the `response.json()` call to be settled
+//     // the `response.json()` call will either return the parsed JSON object or throw an error
+//     const data = await response.json();
+//     console.log(data[0].name);
+//   }
+//   catch (error) {
+//     console.error(`Could not get products: ${error}`);
+//   }
+// }
+
+// fetchProducts();
+
+// // try...catch block
+// async function fetchProducts() {
+//   try {
+//     const response = await fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+//     if (!response.ok) {
+//       throw new Error(`HTTP error: ${response.status}`);
+//     }
+//     const data = await response.json();
+//     return data;
+//   }
+//   catch (error) {
+//     console.error(`Could not get products: ${error}`);
+//   }
+// }
+// const promise = fetchProducts();
+// promise.then((data) => console.log(data[0].name));
+
+try {
+  // using await outside an async function is only allowed in a module -> this doesn't work
+  const response = await fetch('https://mdn.github.io/learning-area/javascript/apis/fetching-data/can-store/products.json');
+  if (!response.ok) {
+    throw new Error(`HTTP error: ${response.status}`);
+  }
+  const data = await response.json();
+  console.log(data[0].name);
+}
+catch(error) {
+  console.error(`Could not get products: ${error}`);
+}
+
+
+
+</script>
+</html>
