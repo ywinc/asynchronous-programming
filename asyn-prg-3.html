@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style></style>
+</head>
+<body>
+
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" size="4" value="Matilda" />
+      </div>
+      <div>
+        <label for="delay">Delay:</label>
+        <input type="text" id="delay" name="delay" size="4" value="1000" />
+      </div>
+      <button id="set-alarm">Set alarm</button>
+      <div id="output"></div>
+
+
+</body>
+
+<script>
+// How to Implement a Promise-based API
+/* 
+alarm() API
+Take person name, and delay (ms) to wake person up -> send wake up msg
+setTimeout(): takes callback function and delay as arguments -> start timer to delay
+When time expires, it calls given function
+*/
+
+// const output = document.querySelector('#output');
+// const button = document.querySelector('#set-alarm');
+
+// function setAlarm() {
+//   setTimeout(() => {
+//     output.textContent = 'Wake up!';
+//   }, 1000);
+// }
+// // delay 1000 ms
+// button.addEventListener('click', setAlarm);
+
+// /* promise() Constructor
+// Takes a single function (executor) as an argument
+// When you create a promise, you supply the implementation of the executor
+
+// Executor takes resolve and reject (functions) as arguments
+
+// */
+
+// function alarm(person, delay) {
+//   return new Promise((resolve, reject) => {
+//     if (delay < 0) {
+//       throw new Error('Alarm delay must not be negative');
+//     }
+//     setTimeout(() => {
+//       resolve(`Wake up, ${person}!`);
+//     }, delay);
+//   });
+// }
+
+// function creates and returns new promise
+// inside executor: check delay is not negative, throw an error if it is
+// call setTimeout(), pass callback and delay
+// callback will be called when the timer expires -> call resolve, pass in "wake up" msg
+
+// /* Use alarm() API
+// call alarm(), and call then() and catch() on returned promise to set handlers for promise fulfillment and rejection */
+// const name = document.querySelector('#name');
+// const delay = document.querySelector('#delay');
+// const button = document.querySelector('#set-alarm');
+// const output = document.querySelector('#output');
+
+// function alarm(person, delay) {
+//   return new Promise((resolve, reject) => {
+//     if (delay < 0) {
+//       throw new Error('Alarm delay must not be negative');
+//     }
+//     setTimeout(() => {
+//       resolve(`Wake up, ${person}!`);
+//     }, delay);
+//   });
+// }
+
+// button.addEventListener('click', () => {
+//   alarm(name.value, delay.value)
+//     .then((message) => output.textContent = message)
+//     .catch((error) => output.textContent = `Couldn't set alarm: ${error}`);
+// });
+// // if delay value is negative, throw error
+
+// Use async and await with alarm() API
+const name = document.querySelector('#name');
+const delay = document.querySelector('#delay');
+const button = document.querySelector('#set-alarm');
+const output = document.querySelector('#output');
+
+function alarm(person, delay) {
+  return new Promise((resolve, reject) => {
+    if (delay < 0) {
+      throw new Error('Alarm delay must not be negative');
+    }
+    setTimeout(() => {
+      resolve(`Wake up, ${person}!`);
+    }, delay);
+  });
+}
+
+button.addEventListener('click', async () => {
+  try {
+    const message = await alarm(name.value, delay.value);
+    output.textContent = message;
+  }
+  catch (error) {
+    output.textContent = `Couldn't set alarm: ${error}`;
+  }
+});
+
+
+
+</script>
+</html>
