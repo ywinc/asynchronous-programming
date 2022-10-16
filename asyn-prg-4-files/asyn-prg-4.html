@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Prime numbers</title>
+    <script src="main.js" defer></script>
+    <!-- <link href="style.css" rel="stylesheet" /> -->
+    <style>
+        textarea {
+        display: block;
+        margin: 1rem 0;
+        }
+    </style>
+  </head>
+
+  <body>
+    <label for="quota">Number of primes:</label>
+    <input type="text" id="quota" name="quota" value="1000000" />
+
+    <button id="generate">Generate primes</button>
+    <button id="reload">Reload</button>
+
+    <textarea id="user-input" rows="5" cols="62">
+Try typing in here immediately after pressing "Generate primes"
+</textarea>
+
+    <div id="output"></div>
+  </body>
+
+
+<script>
+ /* Introducing Workers
+
+ Workers: enable you to run some tasks in a separate thread of execution
+ With a long running synchronous task, the whole window is unresponsive
+ (Program is single-threaded, can only do one thing at a time)
+ Thread: sequence of instructions that a program follows
+ Workers give you the ability to run some tasks in different thread
+ Start task, then continue with other processing (i.e. handle user actions)
+
+ Multi-threaded code- never know when your thread will be suspended
+ If both threads have access to same variables, possible that variable can change unexpectedly
+ -> bugs are hard to find
+
+ Main code and worker code should never get direct access to each other's variables
+ (interact by sending each other msg -> can't access DOM (window, doc, page elements))
+ 1. Dedicated workers
+ 2. Shared workers
+ 3. Service workers
+*/
+
+// /* Using web workers
+// The synchronous prime generator (prime number calculation)
+// */
+
+// function generatePrimes(quota) {
+
+// function isPrime(n) {
+//   for (let c = 2; c <= Math.sqrt(n); ++c) {
+//     if (n % c === 0) {
+//         return false;
+//      }
+//   }
+//   return true;
+// }
+
+// const primes = [];
+// const maximum = 1000000;
+
+// while (primes.length < quota) {
+//   const candidate = Math.floor(Math.random() * (maximum + 1));
+//   if (isPrime(candidate)) {
+//     primes.push(candidate);
+//   }
+// }
+
+// return primes;
+// }
+
+// document.querySelector('#generate').addEventListener('click', () => {
+// const quota = document.querySelector('#quota').value;
+// const primes = generatePrimes(quota);
+// document.querySelector('#output').textContent = `Finished generating ${quota} primes!`;
+// });
+// // page unresponsive after calling generatePrimes()
+
+// document.querySelector('#reload').addEventListener('click', () => {
+// document.querySelector('#user-input').value = 'Try typing in here immediately after pressing "Generate primes"';
+// document.location.reload();
+// });
+
+/* Other types of workers
+
+Shared workers: shared by several diff scripts running in diff windows
+
+Service workers: act like proxy servers, caching resources so web apps can work when user is offline
+Key component of progressive web apps
+ */
+
+</script>
+</html>
